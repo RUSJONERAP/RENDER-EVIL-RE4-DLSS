@@ -20,12 +20,18 @@ Sharper scenes. Readable subtitles. A reticle that stays intact when you move th
 | --- | --- |
 | NVIDIA DLSS Super Resolution | DLAA, Quality, Balanced, Performance, Ultra Performance |
 | DLSS 5 Neural Rendering | Its own switch, model preset, intensity and working resolution |
-| Clean interface | SR runs before the HUD and post-processing through Actual DLSS |
+| Clean interface | Both SR and NR run on the scene before the game's interface is composited |
 | Your frame cap | Any target from 10 to 360 FPS, plus handy presets and a frame-time graph |
 | One place for everything | **Insert** opens the English / Russian panel |
 | A way back | Installer checks files and backs up the previous setup outside the game |
 
 All required mod DLLs and both DLSS runtimes are in the release ZIP. **No separate mod downloads.** You still need the game and a compatible NVIDIA driver. Frame generation is not included.
+
+## Why the HUD stays clear
+
+Actual DLSS places Super Resolution at the game's native upscaling stage. Our integration keeps F5 Neural Rendering inside that same evaluation, so both passes finish before the game adds its interface. The tested route preserves readable menus, subtitles and the reticle while SR and NR process the scene.
+
+**[Read the technical write-up: the before-HUD pipeline, compatibility bridge and GPU-lifetime fixes](docs/HUD_PIPELINE.md).**
 
 ## Install in a minute
 
