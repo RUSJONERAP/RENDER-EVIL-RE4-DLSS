@@ -39,13 +39,9 @@ For a custom FPS cap, set the game's frame rate to **Variable**, then enable **L
 
 To restore your previous setup, close RE4 and run **`Uninstall.cmd`** from the extracted package. Backups live in `%LOCALAPPDATA%\RENDER-EVIL\Backups`. The installer also prints the exact backup manifest path. Saves and `re4.exe` are not changed.
 
-## Start here on an RTX 5070 Ti
-
-At **2560×1440**: **Quality**, NR **preset B**, **100%** working resolution, **one pass**, **after SR**. If you need more FPS, turn NR off first or try a lower NR working resolution. Keep SR enabled independently.
-
 ## Compatibility and current status
 
-Tested locally with **RE4 Steam 1.5.9.0, Windows 11, RTX 5070 Ti, driver 621.01, 1440p**. Other GPUs and game builds are not verified. The installer checks the exact supported game executable and stops if it differs. It also rejects known injector conflicts; do not stack this package with PD Upscaler, another OptiScaler or a DXGI injector.
+Validated against **RE4 Steam 1.5.9.0 on Windows 11**. See the [validation notes](docs/VALIDATION.md) for the test setup and coverage; other configurations are not verified. The installer checks the exact supported game executable and stops if it differs. It also rejects known injector conflicts; do not stack this package with PD Upscaler, another OptiScaler or a DXGI injector.
 
 The rendering revision was tested in gameplay with clean UI, a DLC cutscene, a working 70 FPS cap and normal menu exit. One session recorded **28,943 NR frames with zero model failures**. RC.2 renames the project and simplifies installation; its panel was checked with offscreen rendering. Full details: [validation notes](docs/VALIDATION.md).
 
