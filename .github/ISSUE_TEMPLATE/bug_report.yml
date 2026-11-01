@@ -1,0 +1,28 @@
+name: Report a problem
+description: Help us reproduce a graphics, menu or installation issue.
+title: "[Bug] "
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Load this area...
+2. Enable...
+3. Open..."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Your setup
+      description: Build version, GPU, driver, resolution, game version, SR mode, NR settings and other installed mods.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots or relevant log lines
+      description: Include relevant lines from re2_framework_log.txt, OptiScaler.log or reframework/data/re4dlss/re4dlss.log. Check for personal information before posting.

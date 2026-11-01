@@ -1,0 +1,5 @@
+Actual DLSS (No UI Blur), author khanguyen111.
+https://www.nexusmods.com/residentevil42023/mods/7795
+The supplied DLL is included unchanged at the user's express direction for local assembly.
+The upstream page restricts reuploads and modification. No additional distribution permission or relicensing is claimed.
+Original file SHA256: 8488D097EED140F96AE8C0833F5B73F9318FAB0B978920C8A47D1044FA2DF4C8

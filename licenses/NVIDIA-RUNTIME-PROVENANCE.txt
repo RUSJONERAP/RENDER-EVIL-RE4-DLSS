@@ -1,0 +1,4 @@
+NVIDIA owns the DLSS runtimes. They are binary dependencies, not authored or relicensed by this integration.
+SR 310.9.16.0 is the previously installed signed runtime.
+NR 310.9.16.0 is the user-supplied unsigned runtime. Its signature/authenticity is not claimed verified.
+These files were not modified. See manifest.json for exact hashes.

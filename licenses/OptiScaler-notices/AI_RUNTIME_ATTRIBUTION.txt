@@ -1,0 +1,23 @@
+Third-party files for the engine's AI depth (nrcore DlssNr_AiDepth) and DLSS Frame Generation
+=============================================================================================
+
+onnxruntime.dll
+  ONNX Runtime (DirectML build), Microsoft Corporation. MIT License -- see onnxruntime_LICENSE.txt.
+  https://github.com/microsoft/onnxruntime
+
+DirectML.dll
+  Microsoft DirectML redistributable (Microsoft.AI.DirectML NuGet package), Microsoft Corporation.
+  Distributed under the Microsoft DirectML license that ships with that package:
+  https://www.nuget.org/packages/Microsoft.AI.DirectML  (License: see the package's LICENSE.txt)
+
+dlssnr_depth_anything_v2_small_518x294.onnx
+  Depth Anything V2 Small (Yang et al., 2024), converted to ONNX at 518x294. The Small model is released
+  under the Apache License 2.0 -- see Apache-2.0_LICENSE.txt.
+  https://github.com/DepthAnything/Depth-Anything-V2  /  https://huggingface.co/depth-anything/Depth-Anything-V2-Small
+
+OptiScaler\streamline\*
+  NVIDIA Streamline 2.11.1 production runtime and NVIDIA DLSS Frame Generation, NVIDIA Corporation, NVIDIA-signed
+  and unmodified. The DLSS-G plugin sl.dlss_g.dll is shipped under the name sl.dlssg_nr.dll (same bytes) so that
+  REFramework's hook on that exact file name does not catch it. Licences: streamline.license.txt,
+  nvngx_dlss.license.txt, reflex.license.txt in that folder.
+  https://github.com/NVIDIA-RTX/Streamline

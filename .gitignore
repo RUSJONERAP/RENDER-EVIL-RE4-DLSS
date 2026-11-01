@@ -1,0 +1,10 @@
+# Full binary distribution belongs in Releases, not source history.
+*.dll
+*.exe
+*.zip
+*.obj
+*.pdb
+*.log
+build/
+.vs/
+.DS_Store
