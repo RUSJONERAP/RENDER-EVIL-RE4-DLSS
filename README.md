@@ -43,7 +43,7 @@ To restore your previous setup, close RE4 and run **`Uninstall.cmd`** from the e
 
 Validated against **RE4 Steam 1.5.9.0 on Windows 11**. See the [validation notes](docs/VALIDATION.md) for the test setup and coverage; other configurations are not verified. The installer checks the exact supported game executable and stops if it differs. It also rejects known injector conflicts; do not stack this package with PD Upscaler, another OptiScaler or a DXGI injector.
 
-The rendering revision was tested in gameplay with clean UI, a DLC cutscene, a working 70 FPS cap and normal menu exit. One session recorded **28,943 NR frames with zero model failures**. RC.2 renames the project and simplifies installation; its panel was checked with offscreen rendering. Full details: [validation notes](docs/VALIDATION.md).
+Checked scenarios include gameplay with SR + NR, menus and HUD, a DLC cutscene, a 70 FPS cap and exit through the game menu. Gameplay checks cover the RC.1 rendering path retained in RC.2; the updated panel and installer passed separate offline checks. See the [validation notes](docs/VALIDATION.md) for results.
 
 - **Known issue:** Alt+F4 can show `Fatal D3D error 4 / E_ACCESSDENIED` at shutdown. **Exit through the game's menu** instead; that path passed the local test.
 - Not every campaign cutscene has been tested. Auxiliary-view NR bypass is unit-tested; its activation in an actual cutscene still needs confirmation.
