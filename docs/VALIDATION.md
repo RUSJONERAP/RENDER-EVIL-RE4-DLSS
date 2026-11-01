@@ -1,5 +1,7 @@
 # Validation notes
 
+For the rendering architecture and how both SR and NR stay before interface composition, see [Keeping the HUD outside Super Resolution and Neural Rendering](HUD_PIPELINE.md).
+
 Tested hardware: RTX 5070 Ti, Ryzen 5 7500F, 2560×1440, Windows 11, NVIDIA 621.01. Game: Steam RE4 1.5.9.0; exact executable SHA256 is in the release manifest.
 
 | Check | Evidence |
