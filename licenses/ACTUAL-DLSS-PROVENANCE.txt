@@ -1,5 +1,12 @@
 Actual DLSS (No UI Blur), author khanguyen111.
 https://www.nexusmods.com/residentevil42023/mods/7795
-The supplied DLL is included unchanged at the user's express direction for local assembly.
-The upstream page restricts reuploads and modification. No additional distribution permission or relicensing is claimed.
+
+Special thanks to khanguyen111 for Actual DLSS and permission to publish the
+RE:NDER EVIL bundle on Nexus Mods with the unchanged re4dlss.dll.
+Approval recorded: 2 November 2026, Nexus Mods direct message.
+Scope: RE:NDER EVIL (DLSS SR/NR) publication on Nexus Mods, including the
+unmodified DLL, for a free release with Donation Points disabled.
+This is project-specific Nexus permission, not a general redistribution or
+modification license. Other component terms remain applicable.
+Permission record: https://github.com/RUSJONERAP/RENDER-EVIL-RE4-DLSS/blob/main/docs/ACTUAL_DLSS_PERMISSION.md
 Original file SHA256: 8488D097EED140F96AE8C0833F5B73F9318FAB0B978920C8A47D1044FA2DF4C8
