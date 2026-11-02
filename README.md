@@ -72,12 +72,14 @@ Checked scenarios include gameplay with SR + NR, menus and HUD, a DLC cutscene, 
 
 **Build, integration and panel: RUSJONERAP + Codex.**
 
+Special thanks to **khanguyen111** for Actual DLSS and for approving the publication of RE:NDER EVIL on Nexus Mods with the unchanged Actual DLSS DLL. The requested Nexus release is free, with Donation Points disabled. See the [permission record](docs/ACTUAL_DLSS_PERMISSION.md).
+
 - **[Actual DLSS (No UI Blur)](https://www.nexusmods.com/residentevil42023/mods/7795) — khanguyen111.** The before-HUD DLSS implementation; supplied DLL is unchanged.
 - **[OptiScaler F5](https://github.com/janblade/OptiScaler-F5-DLSSNR-Multipass)** — OptiScaler developers and F5 contributors. Neural Rendering backend.
 - **[REFramework](https://github.com/TheRazerMD/REFramework)** — praydog; branch foundation TheRazerMD / PureDark.
 - **Design inspired by [DLSS5-Autopilot](https://github.com/Kizzuwatnaa/DLSS5-Autopilot) — Kizzuwatnaa and contributors.** MIT notice retained.
 - **NVIDIA** — DLSS technology and runtimes.
 
-Our integration changes use the MIT license. Third-party components keep their own terms; see [component notices](THIRD_PARTY.md). The included Actual DLSS DLL has upstream redistribution restrictions; inclusion does not grant additional rights or change its authorship.
+Our integration changes use the MIT license. Third-party components keep their own terms; see [component notices](THIRD_PARTY.md). khanguyen111 has approved this project’s Nexus Mods publication with the unchanged Actual DLSS DLL; see the [permission record](docs/ACTUAL_DLSS_PERMISSION.md) for scope and release conditions.
 
 Want to inspect or improve the integration? Start with [building from source](docs/BUILD_SOURCE.md) and the [source layout](source/README.md).
