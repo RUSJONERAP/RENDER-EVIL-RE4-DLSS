@@ -120,4 +120,6 @@ Two limits remain separate from the HUD result:
 
 ## Credits
 
+Special thanks to **khanguyen111** for the native DLSS implementation and permission to publish the unchanged Actual DLSS DLL in the free RE:NDER EVIL Nexus Mods release, with Donation Points disabled. [Permission record](ACTUAL_DLSS_PERMISSION.md).
+
 **Actual DLSS / native before-HUD SR:** khanguyen111. **Neural Rendering backend:** OptiScaler F5 contributors and NVIDIA runtimes. **Compatibility adapter, GPU-lifetime handling, quality-command integration and unified panel:** RUSJONERAP + Codex, built on REFramework. Component terms remain listed in [THIRD_PARTY.md](../THIRD_PARTY.md).
