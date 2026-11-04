@@ -27,7 +27,13 @@ struct NgxParametersView {
 struct Extent {uint32_t width=0,height=0;};
 inline bool nr_primary_view(Extent view,Extent primary) {
     // Unknown dimensions stay on the normal path instead of guessing a crop.
-    return !view.width || !view.height || !primary.width || !primary.height ||
-           (view.width==primary.width && view.height==primary.height);
+    if(!view.width || !view.height || !primary.width || !primary.height ||
+       (view.width==primary.width && view.height==primary.height))return true;
+    // Actual DLSS 0.3.1 also handles a 16:9 scene fitted inside the swapchain.
+    // Accept that full-axis scene, never arbitrary smaller auxiliary textures.
+    if(view.width>primary.width || view.height>primary.height)return false;
+    if(view.width!=primary.width && view.height!=primary.height)return false;
+    const auto wide=uint64_t(view.width)*9,tall=uint64_t(view.height)*16;
+    return wide>tall?wide-tall<=32:tall-wide<=32;
 }
 }

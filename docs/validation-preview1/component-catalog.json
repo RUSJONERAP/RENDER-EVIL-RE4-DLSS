@@ -1,0 +1,769 @@
+{
+  "schema": 1,
+  "name": "RE:NDER EVIL (DLSS SR/NR)",
+  "version": "0.2.0-preview.1",
+  "created": "2026-11-04T05:55:43.684342+03:00",
+  "supportedGameSha256": "A1082B154105FAC7CA22668FFC1C99A8BFC9F1B945439276C556EDEA7597A5B7",
+  "profiles": {
+    "off": "Base SR/NR, no FG libraries or adapter",
+    "native": "RTX 40/50, NVIDIA Streamline, default 2x",
+    "legacy": "Experimental RTX 20/30, sm86 0.4.1 winmm proxy, default 2x"
+  },
+  "validation": {
+    "nativeRuntime": "RTX 5070 Ti: SR+NR+FG 2x, 3x generation observed",
+    "rtx40RuntimeTested": false,
+    "legacyRuntimeTested": false
+  },
+  "guards": [
+    {
+      "path": "version.dll",
+      "acceptedHashes": [
+        "7ABE6F92FECFF80C60C7598BFC524E11C207BB1E385A29EE0BF925853C7F737D"
+      ]
+    },
+    {
+      "path": "dinput8.dll",
+      "acceptedHashes": [
+        "06654DB3F6553B6C3CC59E696FB08FD501AB6C8B1E4EBB3BAE151820DF0889DD",
+        "2CE6D8A279925931758381932B4611028EC8CE5908A72B773B80586FD1271C9F",
+        "622B0473F948C982EC0905E242DFC2B8D8378CC9F4BCE63E9E29E6F5DA16999A",
+        "85365A1EC4BBAE8D0FDD643D198989C9BB240F8E06D685B0F662AE22C0E2B152"
+      ]
+    },
+    {
+      "path": "reframework/plugins/re4dlss.dll",
+      "acceptedHashes": [
+        "7753B4239B291232E21732D80C80257C443CFE18C3B8DB5FC1C52F175BFF6FAF",
+        "8488D097EED140F96AE8C0833F5B73F9318FAB0B978920C8A47D1044FA2DF4C8"
+      ]
+    },
+    {
+      "path": "nvngx.dll_dlssnr.dll",
+      "acceptedHashes": [
+        "D5B38754225126BD848DD49FB1A97861F8C9A995A25AA2B55A7B107459B2792B"
+      ]
+    },
+    {
+      "path": "nvngx_dlss.dll",
+      "acceptedHashes": [
+        "D00B5B0AB29C3CA101B70C3A5ECB3A01B7EF33766A3383A28A18623083E6123E"
+      ]
+    },
+    {
+      "path": "nvngx_dlssnr.dll",
+      "acceptedHashes": [
+        "CDFA6C1EC784867182164C7836F324F087B5C9F374D0C9FE46F54999FEABF3ED"
+      ]
+    },
+    {
+      "path": "winmm.dll",
+      "acceptedHashes": [
+        "1A584A9B0333E0C3BE4AB32E00901C545CA16A620A56784A67CACF003C041739"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "dinput8.dll",
+      "source": "components/base/dinput8.dll",
+      "group": "base",
+      "sha256": "06654DB3F6553B6C3CC59E696FB08FD501AB6C8B1E4EBB3BAE151820DF0889DD",
+      "bytes": 22832640,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "nvngx.dll_dlssnr.dll",
+      "source": "components/base/nvngx.dll_dlssnr.dll",
+      "group": "base",
+      "sha256": "D5B38754225126BD848DD49FB1A97861F8C9A995A25AA2B55A7B107459B2792B",
+      "bytes": 114688,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "nvngx_dlss.dll",
+      "source": "components/base/nvngx_dlss.dll",
+      "group": "base",
+      "sha256": "D00B5B0AB29C3CA101B70C3A5ECB3A01B7EF33766A3383A28A18623083E6123E",
+      "bytes": 58956912,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "nvngx_dlssnr.dll",
+      "source": "components/base/nvngx_dlssnr.dll",
+      "group": "base",
+      "sha256": "CDFA6C1EC784867182164C7836F324F087B5C9F374D0C9FE46F54999FEABF3ED",
+      "bytes": 276162560,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/autorun/re4_unified_native.lua",
+      "source": "components/base/reframework/autorun/re4_unified_native.lua",
+      "group": "base",
+      "sha256": "A980EE2775F7A141E331C306E96D6B7A547C3BE2AB5EDB1A5BE02BA359F2E6D0",
+      "bytes": 2054,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/enabled.txt",
+      "source": "components/base/reframework/data/re4unified/enabled.txt",
+      "group": "base",
+      "sha256": "0AF6B9627D09C2E5728DE54DDBF8F4410089317A454DCF75B7976B51DA062301",
+      "bytes": 27,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/engine_command.json",
+      "source": "components/base/reframework/data/re4unified/engine_command.json",
+      "group": "base",
+      "sha256": "C16996AFB40BF2BF7E42FDF75EDB4BA37AD41CEAD07B4515C151EED91FEF07A0",
+      "bytes": 49,
+      "preserveExisting": true,
+      "mutable": true
+    },
+    {
+      "path": "reframework/plugins/re4dlss.dll",
+      "source": "components/base/reframework/plugins/re4dlss.dll",
+      "group": "base",
+      "sha256": "7753B4239B291232E21732D80C80257C443CFE18C3B8DB5FC1C52F175BFF6FAF",
+      "bytes": 1352704,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "version.dll",
+      "source": "components/base/version.dll",
+      "group": "base",
+      "sha256": "7ABE6F92FECFF80C60C7598BFC524E11C207BB1E385A29EE0BF925853C7F737D",
+      "bytes": 29286912,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/sl.interposer.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/sl.interposer.dll",
+      "group": "fg",
+      "sha256": "B1D7395AEBD7B9722841D64DCF7433680020B6A8E421F851C16D5BA0C2182EDF",
+      "bytes": 652928,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/sl.common.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/sl.common.dll",
+      "group": "fg",
+      "sha256": "38EEA3B4209AFC455636EA372B5933D65FCC13BECEC6C84D101DCFC4D8648F75",
+      "bytes": 843904,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/sl.dlss_g.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/sl.dlss_g.dll",
+      "group": "fg",
+      "sha256": "3ED9538DF724993BEA8A050195A6A78B9C8C8A566D5B05ADE477AAB3C390E90F",
+      "bytes": 637056,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/sl.reflex.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/sl.reflex.dll",
+      "group": "fg",
+      "sha256": "443577E869352436FF7EC8F4D9C90418D3E95368436CE219261E0F4F07A38122",
+      "bytes": 388736,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/sl.pcl.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/sl.pcl.dll",
+      "group": "fg",
+      "sha256": "5698C38E722318681F215C9FE68E45B9BEDD51378ACC699D8EEE26E961E57770",
+      "bytes": 360064,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/plugins/re4dlss_fg/nvngx_dlssg.dll",
+      "source": "components/fg/reframework/plugins/re4dlss_fg/nvngx_dlssg.dll",
+      "group": "fg",
+      "sha256": "8D59D49B36410DD6B62FEF2503A5871D347415BD85D943FA0848563A95DD50C7",
+      "bytes": 7506544,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/actual_fg.txt",
+      "source": "components/fg/reframework/data/re4unified/actual_fg.txt",
+      "group": "fg",
+      "sha256": "40A2218D8B6DBF0AE8959E3D2BE9D69AFFD70EAE9328DE4D52753B7A0FF5E2C2",
+      "bytes": 84,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "winmm.dll",
+      "source": "components/legacy/winmm.dll",
+      "group": "legacy",
+      "sha256": "1A584A9B0333E0C3BE4AB32E00901C545CA16A620A56784A67CACF003C041739",
+      "bytes": 825984,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "dlssg_sm86/backend/sm86_backend.dll",
+      "source": "components/legacy/dlssg_sm86/backend/sm86_backend.dll",
+      "group": "legacy",
+      "sha256": "D1B56F6EE9A58BA6284804303CF903535C7ACBF4FDCE3320F6FD21F50569D357",
+      "bytes": 2312840,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "dlssg_sm86/kernels/fg_kernels.dll",
+      "source": "components/legacy/dlssg_sm86/kernels/fg_kernels.dll",
+      "group": "legacy",
+      "sha256": "F59A45A04EDDDA2F2EBAE4B8685B05AF4432A80CE87CC78D83E4B9414E079A20",
+      "bytes": 11875464,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "dlssg_sm86/runtime/nvngx_dlssg.dll",
+      "source": "components/legacy/dlssg_sm86/runtime/nvngx_dlssg.dll",
+      "group": "legacy",
+      "sha256": "CADEE1AA6DB3907BABDC3285DA2AEBC4553D92B89C38BA3EAE8ABD8BBA1BEA72",
+      "bytes": 7506544,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/ACTUAL-DLSS-PROVENANCE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/ACTUAL-DLSS-PROVENANCE.txt",
+      "group": "base",
+      "sha256": "849F1AF1ADE97E440D4F66B44C3F4AF886F601958712C090F538B3B0018B9FDD",
+      "bytes": 796,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/DLSS5-Autopilot-MIT.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/DLSS5-Autopilot-MIT.txt",
+      "group": "base",
+      "sha256": "210872675F5CBCF941A58E9F7B59D9CFFBE88520AF451AC6D78A32BC2E4094F3",
+      "bytes": 1087,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/dlssg-for-sm86/LICENSE.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/dlssg-for-sm86/LICENSE.md",
+      "group": "base",
+      "sha256": "7537220F50C6430D953EDA8BFF01F0817014E604CB3607F3B62C786D070D8570",
+      "bytes": 1065,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/dlssg-for-sm86/MANUAL.en.html",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/dlssg-for-sm86/MANUAL.en.html",
+      "group": "base",
+      "sha256": "DFDA9A99E47452CA663923408AF31820ED66571CB28F5358CEABDFC45BC871C3",
+      "bytes": 38373,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/dlssg-for-sm86/README.en.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/dlssg-for-sm86/README.en.md",
+      "group": "base",
+      "sha256": "E98BC3810F3BD26F28278173ED7ED81761DA6FEAFB68F4E8C8307159B0F21147",
+      "bytes": 50860,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/dlssg-for-sm86/THIRD_PARTY_NOTICES.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/dlssg-for-sm86/THIRD_PARTY_NOTICES.txt",
+      "group": "base",
+      "sha256": "7B713D4449F50FF6DAC8A26FF9AF1D88600814DC5C35BFCF61416B9EC089614B",
+      "bytes": 10713,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/INTEGRATION-MIT.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/INTEGRATION-MIT.txt",
+      "group": "base",
+      "sha256": "BEBEB936E2BA1E7304E6E2E3FD22F0B8DD88FBEA1E2511BCD2C1C96266E7E4CD",
+      "bytes": 1220,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/NVIDIA-RUNTIME-PROVENANCE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/NVIDIA-RUNTIME-PROVENANCE.txt",
+      "group": "base",
+      "sha256": "A699421B08AC74459360563F4E28FFD59AE34CE0D856F93BA4AC5B65DCB92334",
+      "bytes": 343,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-GPL-3.0.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-GPL-3.0.txt",
+      "group": "base",
+      "sha256": "230184F60BAE2FEAF244F10A8BAC053C8FF33A183BCC365B4D8B876D2B7F4809",
+      "bytes": 35823,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/AI_RUNTIME_ATTRIBUTION.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/AI_RUNTIME_ATTRIBUTION.txt",
+      "group": "base",
+      "sha256": "3B495D0142F49D8A54119B2835944BFB836508BBE0451C6E15F49641D8C135FF",
+      "bytes": 1424,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/Apache-2.0_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/Apache-2.0_LICENSE.txt",
+      "group": "base",
+      "sha256": "B40930BBCF80744C86C46A12BC9DA056641D722716C378F5659B9E555EF833E1",
+      "bytes": 11357,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/BaBa_Sharpen_Neural_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/BaBa_Sharpen_Neural_LICENSE.txt",
+      "group": "base",
+      "sha256": "8B05589B64F1C6BF868996982BE6A4242B9CDB52DE60BEF1B658F440F7632411",
+      "bytes": 1830,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/DirectX_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/DirectX_LICENSE.txt",
+      "group": "base",
+      "sha256": "5239850894610071566F7ECEE0B751FDE43C862032D92B99D7D0F596B3433EBD",
+      "bytes": 13147,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/DXL_ATTRIBUTION.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/DXL_ATTRIBUTION.txt",
+      "group": "base",
+      "sha256": "F1209751D152132ADF91D1F5EBE56CCA339E27BA60E5CC2E4FDBADFBBCA37B01",
+      "bytes": 2111,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/FidelityFX_OpticalFlow_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/FidelityFX_OpticalFlow_LICENSE.txt",
+      "group": "base",
+      "sha256": "C93D509CD69D50698796C9C3274247352736EF122A3197ACE2010F0978E21AA6",
+      "bytes": 1136,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/FidelityFX_v2_LICENSE.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/FidelityFX_v2_LICENSE.md",
+      "group": "base",
+      "sha256": "F0DA09D71AD5C82759A179E774535D4A829E5C96C49294167C1152402B2CB400",
+      "bytes": 61784,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/LICENSE",
+      "group": "base",
+      "sha256": "230184F60BAE2FEAF244F10A8BAC053C8FF33A183BCC365B4D8B876D2B7F4809",
+      "bytes": 35823,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/onnxruntime_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/onnxruntime_LICENSE.txt",
+      "group": "base",
+      "sha256": "C250D6278F0B47A6439FB7592B08B58A55EB9F535AA49A1DB63211C3F982B674",
+      "bytes": 1094,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/potatoFX_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/potatoFX_LICENSE.txt",
+      "group": "base",
+      "sha256": "8F94276602F93E927D315CF2806D6184988E4595B5004B1A25BC2790677984AF",
+      "bytes": 1657,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/RenoDX_ATTRIBUTION.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/RenoDX_ATTRIBUTION.txt",
+      "group": "base",
+      "sha256": "1D2F2B2F8CF5C9ACFE2EAAA2D2C22FACE87BD19F7DF85453079A28E7123AE727",
+      "bytes": 2976,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/Skynizz_optiscaler-dlss5_NOTICE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/Skynizz_optiscaler-dlss5_NOTICE.txt",
+      "group": "base",
+      "sha256": "408E1A12E95793A2B29724A837F8EA86D14F4C54917A3B6FD08A624B7B92BF85",
+      "bytes": 36709,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/OptiScaler-notices/XeSS_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/OptiScaler-notices/XeSS_LICENSE.txt",
+      "group": "base",
+      "sha256": "784BE42C39A4A4D03CF85D88E15E59D75828FCA773CE45B8DBFFFBD7EAF208DF",
+      "bytes": 4194,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/asmjit-src/LICENSE.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/asmjit-src/LICENSE.md",
+      "group": "base",
+      "sha256": "6DE84DEBF5D9D30B252C397FC6FFF79820B32B7513ED5E338E2AB4B8554F9ED6",
+      "bytes": 879,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/bddisasm-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/bddisasm-src/LICENSE",
+      "group": "base",
+      "sha256": "C379E47C03B92CD6C79FC024FE6E7823652F0BC34910309D9371DFE9C907288D",
+      "bytes": 11542,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/directxtk-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/directxtk-src/LICENSE",
+      "group": "base",
+      "sha256": "9906940F61B1F0B533FA7D99BAF55178B2808FBE113EA51DFBFAD8572CCD5F2B",
+      "bytes": 1162,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/directxtk12-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/directxtk12-src/LICENSE",
+      "group": "base",
+      "sha256": "9906940F61B1F0B533FA7D99BAF55178B2808FBE113EA51DFBFAD8572CCD5F2B",
+      "bytes": 1162,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/freetype-src/FTL.TXT",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/freetype-src/FTL.TXT",
+      "group": "base",
+      "sha256": "308DCA54B5AAA4A6BA0880621FE3BCF287956821AA948430263062A8333625C0",
+      "bytes": 6912,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/freetype-src/LICENSE.TXT",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/freetype-src/LICENSE.TXT",
+      "group": "base",
+      "sha256": "84F47DC7F0887DD56B05F2F218060581C055E443BD7AF18E46677BEC3DCC2473",
+      "bytes": 2196,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/glm/copying.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/glm/copying.txt",
+      "group": "base",
+      "sha256": "48A257765EA19D81252EE44CBA0F0EDA525C6B2DCBF483CC39015DD76A6F0A20",
+      "bytes": 2919,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/imgui/LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/imgui/LICENSE.txt",
+      "group": "base",
+      "sha256": "55E058CC5899E6077A819AD1005D6D1F4528F65AE100795C9692F9FA6525A8CE",
+      "bytes": 1104,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/imguizmo/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/imguizmo/LICENSE",
+      "group": "base",
+      "sha256": "AAD1F9DF039FB26D448BB398CF6F09F5E480617E05F41F2AFC3B996959759EDA",
+      "bytes": 1104,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/imnodes/LICENSE.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/imnodes/LICENSE.md",
+      "group": "base",
+      "sha256": "767A41002873B84D125F69CC6453215AEA3670E890D82DD939C6EC059BE907D5",
+      "bytes": 1092,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/kananlib-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/kananlib-src/LICENSE",
+      "group": "base",
+      "sha256": "BEB8E42E9D6B4284E03304D05A81A0755200A965FC8D0A5E0AEA1E84CF805D6E",
+      "bytes": 1361,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/minhook/LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/minhook/LICENSE.txt",
+      "group": "base",
+      "sha256": "4F21F857550D7BE854DA6EA5F2DA4E6775CA4E3FBB535E4F3D961C47D0BF3335",
+      "bytes": 4446,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/openxr-src/COPYING.adoc",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/openxr-src/COPYING.adoc",
+      "group": "base",
+      "sha256": "E5E553CDEAFC265E04C2E088E5E3D37658B4E5615FEF46262FB463A24FAFB652",
+      "bytes": 5595,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/openxr-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/openxr-src/LICENSE",
+      "group": "base",
+      "sha256": "3DDF9BE5C28FE27DAD143A5DC76EEA25222AD1DD68934A047064E56ED2FA40C5",
+      "bytes": 11560,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/safetyhook-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/safetyhook-src/LICENSE",
+      "group": "base",
+      "sha256": "36266A8FD073568394CB81CDB2B124F7FDAE2C64C1A7ED09DB34B4D22EFA2951",
+      "bytes": 1359,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/sol2/LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/sol2/LICENSE.txt",
+      "group": "base",
+      "sha256": "A859B1D0562DB1722760CB3A11393D297E4D62A6BE635A019C72EC7834D743D8",
+      "bytes": 1124,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/spdlog/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/spdlog/LICENSE",
+      "group": "base",
+      "sha256": "4CCECAB18D1FF0B61174FE3D6C430541625D3DDB865B0D5887DB296F883C76E7",
+      "bytes": 1354,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-dependencies/zydis-src/LICENSE",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-dependencies/zydis-src/LICENSE",
+      "group": "base",
+      "sha256": "240802D87AE8054D3CBA8CD337332A6741894C65A0C2CE444C4C43EAD494A1A6",
+      "bytes": 1145,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-embedded-notices.hpp",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-embedded-notices.hpp",
+      "group": "base",
+      "sha256": "C1FD6FF34D79C80D0516E84193D18E761EC6EAC5547C1AE0614528A62E39C283",
+      "bytes": 36391,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/REFramework-MIT.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/REFramework-MIT.txt",
+      "group": "base",
+      "sha256": "DC412F7E8B83F2D15623CB5FB0D82428A6F5F5ECDB3E80EEC4CF4481862A82E5",
+      "bytes": 1085,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_0_nis.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_0_nis.license.txt",
+      "group": "base",
+      "sha256": "F80ECFBCE8A84A5B4C1C59DC5A9F0EE9CF5A989C9FBA3A9486EE874F7595A454",
+      "bytes": 1199,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_10_reflex.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_10_reflex.license.txt",
+      "group": "base",
+      "sha256": "EBF83C07FB3B2939908C3795D887AFDE3161C89A28BA391724EFC784CE1BDABE",
+      "bytes": 20504,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_11_3rd-party-licenses.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_11_3rd-party-licenses.md",
+      "group": "base",
+      "sha256": "CB251639994465F31D2178C16ACEDF1FF4F9CEF1C370A09782ED36D4C86C1DCA",
+      "bytes": 14682,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_12_license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_12_license.txt",
+      "group": "base",
+      "sha256": "7B6F23E7D6F3AD6292F9308D2B42CDC3D82AE4E9B2ABB55F230279D83BEDD43D",
+      "bytes": 1591,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_13_NVIDIA Nsight Graphics SDK License (Apache 2.0).txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_13_NVIDIA Nsight Graphics SDK License (Apache 2.0).txt",
+      "group": "base",
+      "sha256": "44595E5FF02A0F1F0FAE737E63ECB6FB70A3E9AFAC4E8878F9B083565013B893",
+      "bytes": 11558,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_14_NVIDIA Nsight Perf SDK License (28Sept2022).pdf",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_14_NVIDIA Nsight Perf SDK License (28Sept2022).pdf",
+      "group": "base",
+      "sha256": "03145B655C109264409F6EC5C170CD3A3C093DE1C5E13F7B59B0935FEFD4725F",
+      "bytes": 133833,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_1_nvngx_dlss.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_1_nvngx_dlss.license.txt",
+      "group": "base",
+      "sha256": "3027F23CA5A46DD9CB8183FBD522983A86F64D7DAAC5982912BF9F214671F294",
+      "bytes": 26727,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_2_reflex.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_2_reflex.license.txt",
+      "group": "base",
+      "sha256": "EBF83C07FB3B2939908C3795D887AFDE3161C89A28BA391724EFC784CE1BDABE",
+      "bytes": 20504,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_3_nis.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_3_nis.license.txt",
+      "group": "base",
+      "sha256": "F80ECFBCE8A84A5B4C1C59DC5A9F0EE9CF5A989C9FBA3A9486EE874F7595A454",
+      "bytes": 1199,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_4_nvngx_dlss.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_4_nvngx_dlss.license.txt",
+      "group": "base",
+      "sha256": "3027F23CA5A46DD9CB8183FBD522983A86F64D7DAAC5982912BF9F214671F294",
+      "bytes": 26727,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_5_reflex.license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_5_reflex.license.txt",
+      "group": "base",
+      "sha256": "EBF83C07FB3B2939908C3795D887AFDE3161C89A28BA391724EFC784CE1BDABE",
+      "bytes": 20504,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_6_winpixeventruntime-LICENSE.md",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_6_winpixeventruntime-LICENSE.md",
+      "group": "base",
+      "sha256": "E61962BC3687516E50877A2BFC56890B3667BE3D6EF811A6BC3438023D850D99",
+      "bytes": 12732,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_7_LICENSE.MIT",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_7_LICENSE.MIT",
+      "group": "base",
+      "sha256": "6F48A03625699EEA99E599744EFEA0BF9C9DD67A669E65554DF1CD726B8A2477",
+      "bytes": 1097,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_8_license.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_8_license.txt",
+      "group": "base",
+      "sha256": "3027F23CA5A46DD9CB8183FBD522983A86F64D7DAAC5982912BF9F214671F294",
+      "bytes": 26727,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/licenses/Streamline/license_9_LICENSE.txt",
+      "source": "components/base/reframework/data/re4unified/notices/licenses/Streamline/license_9_LICENSE.txt",
+      "group": "base",
+      "sha256": "44595E5FF02A0F1F0FAE737E63ECB6FB70A3E9AFAC4E8878F9B083565013B893",
+      "bytes": 11558,
+      "preserveExisting": false,
+      "mutable": false
+    },
+    {
+      "path": "reframework/data/re4unified/notices/CREDITS.txt",
+      "source": "components/base/reframework/data/re4unified/notices/CREDITS.txt",
+      "group": "base",
+      "sha256": "F9703564916A08BC689F763F08817532670CBA3C750DE680BC5EDA301EF64998",
+      "bytes": 753,
+      "preserveExisting": false,
+      "mutable": false
+    }
+  ]
+}

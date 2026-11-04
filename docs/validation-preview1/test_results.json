@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "assertions": 242,
+  "scenarios": [
+    "hardware/driver/HAGS policy matrix",
+    "off install and exact rollback",
+    "native install and exact rollback",
+    "legacy install and exact rollback",
+    "native->off->legacy and reverse rollback/index chain",
+    "foreign injector/wrong EXE/race/path guards",
+    "nested conflicting plugins and junction escape protection",
+    "atomic replacement protects mod-manager hardlink peers",
+    "rollback protects externally changed components",
+    "mid-commit failure automatically restores originals",
+    "package checksum validation"
+  ],
+  "powerShell": "5.1.26100.9711",
+  "gameExecuted": false,
+  "realGameModified": false,
+  "at": "2026-11-04T05:03:38.9059666+03:00"
+}

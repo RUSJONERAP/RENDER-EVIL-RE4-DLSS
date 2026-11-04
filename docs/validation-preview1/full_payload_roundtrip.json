@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "realPayloadFilesVerified": 73,
+  "transactionFiles": 80,
+  "allOriginalsRestored": true,
+  "allAddedFilesRemoved": true,
+  "qualityCommandPreserved": true,
+  "nrPreferencesPreserved": true,
+  "powerShell": "5.1.26100.9711",
+  "gameExecuted": false,
+  "realGameModified": false,
+  "at": "2026-11-04T05:05:43.1141732+03:00"
+}

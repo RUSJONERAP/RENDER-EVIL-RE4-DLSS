@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "method": "Actual WinForms Check button invoked with an off-screen window; plan generation only",
+  "detectedProfile": "native",
+  "nrStartupChoicesVerifiedPerLanguage": 3,
+  "renderedPreviewsInspected": true,
+  "gameModified": false
+}

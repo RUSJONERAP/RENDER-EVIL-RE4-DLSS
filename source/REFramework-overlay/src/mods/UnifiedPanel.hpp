@@ -4,6 +4,7 @@
 #include "ActualOptiBridge.hpp"
 #include "UnifiedNrApi.hpp"
 #include "UnifiedPacing.hpp"
+#include "UnifiedFrameGen.hpp"
 #include <imgui.h>
 #include <json.hpp>
 #include <chrono>
@@ -21,6 +22,9 @@ struct PanelState {
     bool initialized=false,russian=true,sr=true,nr=true,before_sr=false,nr_running=false,live_fresh=false;
     int tab=0,quality=1,preset=0,nr_preset=2,passes=1;
     bool limit_enabled=false;
+    bool fg_enabled=false,fg_module=false;
+    int fg_multiplier=1,reflex=1;
+    framegen::Status fg_status;
     int fps_limit=72;
     float sharpness=0.15f,intensity=1.0f,work_scale=1.0f,fps=0.0f,nr_ms=0.0f;
     uint64_t refreshed=0,requested=0,sharpen_sent=0;
@@ -51,8 +55,14 @@ inline void save_panel(bool update_quality=false) {
     }
 }
 inline bool actual_command(const std::string& command) {
-    if(write_file(actual_data()/L"command.txt",command))return true;
+    if(framegen::commands.push(command))return true;
     panel.error=t("Не удалось передать команду DLSS.","Could not send a DLSS command.");return false;
+}
+inline void pump_actual_commands() {
+    if(!framegen::commands.pending())return;
+    const auto path=actual_data()/L"command.txt";
+    if(!framegen::commands.pump(!trim(read_file(path)).empty(),[&](const auto& command){return write_file(path,command);}))
+        panel.error=t("Не удалось передать команду DLSS.","Could not send a DLSS command.");
 }
 inline bool set_actual(const std::string& section,const std::string& key,const std::string& value) {
     const auto path=actual_data()/L"re4dlss.ini";
@@ -82,6 +92,12 @@ inline bool set_nr(const std::string& key,const std::string& value) {
     panel.notice=t("Параметры переданы. Статус ниже обновится из движка.","Settings sent. Runtime status will update below.");return true;
 }
 inline uint64_t unix_ms() {FILETIME ft{};GetSystemTimeAsFileTime(&ft);ULARGE_INTEGER n{};n.LowPart=ft.dwLowDateTime;n.HighPart=ft.dwHighDateTime;return n.QuadPart/10000-11644473600000ull;}
+inline bool current_session_status(const std::filesystem::path& path) {
+    FILETIME created{},exited{},kernel{},user{};WIN32_FILE_ATTRIBUTE_DATA file{};
+    if(!GetProcessTimes(GetCurrentProcess(),&created,&exited,&kernel,&user) ||
+       !GetFileAttributesExW(path.c_str(),GetFileExInfoStandard,&file))return false;
+    return CompareFileTime(&file.ftLastWriteTime,&created)>=0;
+}
 inline void load_preferences() {
     if(panel.initialized)return;
     try {
@@ -109,8 +125,17 @@ inline void refresh() {
     panel.intensity=std::clamp(float_value(nr,"DlssNr","Intensity",1.0f),0.0f,2.0f);
     panel.work_scale=std::clamp(float_value(nr,"DlssNr","WorkingScale",1.0f),0.25f,1.25f);
     panel.before_sr=bool_value(nr,"DlssNr","RunBeforeSR",false);panel.passes=std::clamp(int_value(nr,"DlssNr","Passes",1),1,3);
+    panel.fg_enabled=bool_value(actual,"FrameGen","FrameGen",false);
+    panel.fg_multiplier=std::clamp(int_value(actual,"FrameGen","Multiplier",1),1,6);
+    panel.reflex=std::clamp(int_value(actual,"FrameGen","Reflex",1),0,2);
     }
     panel.actual_status=read_file(actual_data()/L"status.txt",16384);
+    panel.fg_status=framegen::parse_status(panel.actual_status);
+    panel.fg_module=GetModuleHandleW(L"sl.interposer.dll")!=nullptr;
+    if(!panel.fg_module || !current_session_status(actual_data()/L"status.txt")) {
+        panel.fg_status.ready=false;panel.fg_status.generating=false;
+        if(!current_session_status(actual_data()/L"status.txt"))panel.fg_status={};
+    }
     panel.live_fresh=false;panel.nr_running=false;
     auto live=nlohmann::json::parse(read_file(root()/L"OptiScaler.live.json",131072),nullptr,false);
     if(live.is_object() && live.contains("pid") && live["pid"].is_number_unsigned() && live["pid"].get<uint32_t>()==GetCurrentProcessId() && live.contains("at") && live["at"].is_number()) {
@@ -196,6 +221,8 @@ inline void draw_sr() {
 inline void draw_pacing() {
     heading(t("Плавность","Frame pacing"),t("Произвольный лимит FPS и время кадра","Custom FPS limit and frame-time readings"));
     card_begin("fps_controls");
+    if(panel.fg_module)ImGui::TextWrapped("%s",t("В тесте FG используем подачу кадров Streamline. Собственный лимитер временно недоступен; показания ниже относятся к вызовам Present и могут отличаться от отображаемого FPS.","This FG test uses Streamline pacing. The custom limiter is temporarily unavailable; readings below measure Present calls and may differ from displayed FPS."));
+    ImGui::BeginDisabled(panel.fg_module);
     if(ImGui::Checkbox(t("Ограничивать FPS##limit","Limit frame rate##limit"),&panel.limit_enabled))save_panel();
     ImGui::SetNextItemWidth(180);
     if(ImGui::InputInt(t("Целевой FPS##fps","Target FPS##fps"),&panel.fps_limit,1,10)) {
@@ -206,12 +233,54 @@ inline void draw_pacing() {
         if(i)ImGui::SameLine();char label[12]{};sprintf_s(label,"%d",presets[i]);
         if(ImGui::Button(label,{58,32})){panel.fps_limit=presets[i];panel.limit_enabled=true;save_panel();}
     }
+    ImGui::EndDisabled();
     ImGui::Spacing();ImGui::TextWrapped("%s",t("В игре выберите «Переменная» частота кадров, чтобы штатный лимит не мешал выбранному значению. Ограничитель не повышает FPS ниже цели.","Use Variable frame rate in the game so its built-in cap does not override your target. A cap cannot increase FPS below the target."));
     card_end();ImGui::Spacing();card_begin("fps_readings");
     ImGui::Text("%.1f FPS  |  %.2f ms",pacing::measured_fps,pacing::mean_ms);
     ImGui::Text("P99: %.2f ms",pacing::p99_ms);
     ImGui::PlotLines("##frame_times",pacing::frame_ms.data(),(int)pacing::samples,(int)pacing::cursor,nullptr,0,40,{ImGui::GetContentRegionAvail().x,100});
     ImGui::TextWrapped("%s",t("Для ровной подачи кадров цель должна быть ниже устойчивого FPS сцены. NR остаётся независимым от ограничителя.","For even pacing, choose a target below the scene's sustained FPS. NR remains independent of the limiter."));
+    card_end();
+}
+inline void draw_fg() {
+    heading(t("Генерация кадров","Frame Generation"),t("NVIDIA DLSS-G через Actual DLSS · тестовая интеграция","NVIDIA DLSS-G through Actual DLSS · experimental integration"));
+    card_begin("fg_status");
+    const auto& runtime=panel.fg_status;
+    ImGui::TextColored(colour(runtime.generating?0x86d493:0xe6ac50),"%s",
+        runtime.generating?t("FG: мод сообщает о генерации","FG: mod reports generation active"):
+        (runtime.ready?t("FG готов · генерация выключена","FG ready · generation is off"):t("FG: ожидаем готовность","FG: awaiting readiness")));
+    if(runtime.reported)ImGui::TextWrapped("%s",runtime.message.c_str());
+    else muted(t("Ожидаем статус Actual DLSS.","Waiting for Actual DLSS status."));
+    if(runtime.generating)ImGui::Text("%dx",runtime.multiplier);
+    card_end();ImGui::Spacing();card_begin("fg_controls");
+    if(ImGui::Checkbox(t("Загружать DLSS Frame Generation##fg","Load DLSS Frame Generation##fg"),&panel.fg_enabled)) {
+        actual_command(std::string("framegen=")+(panel.fg_enabled?"1":"0"));
+        panel.notice=t("Изменение загрузки FG применяется после перезапуска игры.","Changing FG loading takes effect after restarting the game.");
+    }
+    if(panel.fg_enabled!=panel.fg_module)ImGui::TextColored(colour(0xe6ac50),"%s",t("Нужен перезапуск игры.","Restart the game to apply this change."));
+    ImGui::BeginDisabled(!runtime.ready);
+    const char* multiplier_names[]{"1x · Off","2x","3x","4x","5x","6x"};
+    const auto maximum=std::clamp(runtime.maximum,1,6);
+    if(ImGui::BeginCombo(t("Множитель кадров##fgmult","Frame multiplier##fgmult"),multiplier_names[panel.fg_multiplier-1])) {
+        for(int value=1;value<=maximum;++value)if(ImGui::Selectable(multiplier_names[value-1],value==panel.fg_multiplier)) {
+            panel.fg_multiplier=value;actual_command("fgmult="+std::to_string(value));
+        }
+        ImGui::EndCombo();
+    }
+    const char* reflex_names[]{"Off","On","On + Boost"};
+    const auto minimum=panel.fg_multiplier>1?1:0;
+    const int shown_reflex=std::max(minimum,panel.reflex);
+    if(ImGui::BeginCombo("NVIDIA Reflex##fgreflex",reflex_names[shown_reflex])) {
+        for(int value=minimum;value<3;++value)if(ImGui::Selectable(reflex_names[value],value==shown_reflex)) {
+            panel.reflex=value;actual_command("reflex="+std::to_string(value));
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::EndDisabled();
+    ImGui::TextWrapped("%s",t("Начните с 2x. Множитель можно менять в игре. 1x прекращает генерацию, оставляя Streamline загруженным. NR включается отдельно.","Start with 2x. Change the multiplier in game. 1x stops generation while keeping Streamline loaded. NR is controlled separately."));
+    card_end();ImGui::Spacing();card_begin("fg_requirements");
+    ImGui::TextWrapped("%s",t("Нужны аппаратное планирование GPU (HAGS) и поддержка DLSS-G. На время проверки закройте RTSS / MSI Afterburner до запуска игры. Reflex при генерации минимум On.","Hardware-accelerated GPU scheduling (HAGS) and DLSS-G support are required. Close RTSS / MSI Afterburner before starting this test. Reflex is at least On while generating frames."));
+    muted("Actual DLSS 0.3.1 · Streamline 2.14.16 · DLSS-G 310.9.16.0");
     card_end();
 }
 inline void draw_nr() {
@@ -255,16 +324,17 @@ inline bool draw() {
     ImGui::SetNextWindowSize({1040,760},ImGuiCond_FirstUseEver);ImGui::SetNextWindowPos({60,60},ImGuiCond_FirstUseEver);
     bool open=true;if(panel_font)ImGui::PushFont(panel_font,0);
     if(ImGui::Begin("RE:NDER EVIL (DLSS SR/NR)###re4_unified",&open,ImGuiWindowFlags_NoCollapse)) {
-        ImGui::TextColored(colour(0xe6ac50),"RE:NDER EVIL");ImGui::SameLine();muted("  DLSS SR / NR · Resident Evil 4");
+        ImGui::TextColored(colour(0xe6ac50),"RE:NDER EVIL");ImGui::SameLine();muted("  DLSS SR / NR / FG · Resident Evil 4");
         ImGui::SameLine(ImGui::GetWindowWidth()-170);
         if(ImGui::Button(panel.russian?"RU":"EN",{56,0})){panel.russian=!panel.russian;save_panel();}
         ImGui::SameLine();if(ImGui::Button(t("Закрыть","Close")))open=false;
         ImGui::Separator();
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,{12,16});
         ImGui::BeginChild("rail",{224,0},ImGuiChildFlags_AlwaysUseWindowPadding);
-        const char* tabs[]{t("Обзор","Overview"),t("Масштабирование","Super Resolution"),t("Нейрорендеринг","Neural Rendering"),t("Плавность","Frame pacing"),t("Диагностика","Diagnostics"),t("О сборке","About the build")};
+        const char* tabs[]{t("Обзор","Overview"),t("Масштабирование","Super Resolution"),t("Нейрорендеринг","Neural Rendering"),t("Плавность","Frame pacing"),t("Диагностика","Diagnostics"),t("О сборке","About the build"),t("Генерация кадров","Frame Generation")};
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign,{0,0.5f});ImGui::PushStyleVar(ImGuiStyleVar_FramePadding,{16,10});ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize,0);
-        for(int i=0;i<6;++i) {
+        const int navigation[]{0,1,2,6,3,4,5};
+        for(const int i:navigation) {
             const bool selected=i==panel.tab;
             ImGui::PushStyleColor(ImGuiCol_Text,colour(selected?0xe6ac50:0x8c929b));
             ImGui::PushStyleColor(ImGuiCol_Button,colour(selected?0x1b1e23:0x0d0e11));
@@ -273,7 +343,7 @@ inline bool draw() {
             ImGui::PopStyleColor(2);
         }
         ImGui::PopStyleVar(3);ImGui::Spacing();ImGui::Separator();ImGui::Spacing();
-        ImGui::SetCursorPosX(28);muted("RUSJONERAP + Codex");ImGui::SetCursorPosX(28);muted("0.1.0 RC.2 · Insert");
+        ImGui::SetCursorPosX(28);muted("RUSJONERAP + Codex");ImGui::SetCursorPosX(28);muted("FG test.1 · Insert");
         ImGui::EndChild();ImGui::PopStyleVar();ImGui::SameLine();
         ImGui::BeginChild("content",{0,0},false,ImGuiWindowFlags_AlwaysUseWindowPadding);
         if(panel.tab==0) {
@@ -288,6 +358,7 @@ inline bool draw() {
             card_end();ImGui::Spacing();card_begin("overview_nr");ImGui::TextUnformatted("Neural Rendering");nr_status();card_end();
             ImGui::Spacing();card_begin("overview_requirements");fsr_requirement();card_end();
         } else if(panel.tab==1)draw_sr();else if(panel.tab==2)draw_nr();else if(panel.tab==3)draw_pacing();
+        else if(panel.tab==6)draw_fg();
         else if(panel.tab==4) {
             heading(t("Диагностика","Diagnostics"),t("Статус загрузки и сообщения компонентов","Component loading status and messages"));
             ImGui::TextWrapped("Actual DLSS: %s",GetModuleHandleW(L"re4dlss.dll")?t("загружен","loaded"):t("не загружен","not loaded"));
@@ -297,11 +368,13 @@ inline bool draw() {
             ImGui::Text("NR auxiliary views bypassed: %u",interop::auxiliary_skips.load());
             ImGui::TextWrapped("NR: %s",panel.live_fresh?t("свежий статус движка","fresh runtime status"):t("подтверждение отсутствует","no runtime confirmation"));
             ImGui::TextWrapped("NR API: %s",nr_api::api.ready?"v1":t("резервный путь через INI","INI fallback"));
+            ImGui::TextWrapped("Streamline: %s",panel.fg_module?t("загружен","loaded"):t("не загружен","not loaded"));
+            ImGui::Text("Actual commands pending: %zu",framegen::commands.pending());
             if(ImGui::Button(t("Перезагрузить настройки SR","Reload SR settings")))actual_command("reload");
             if(ImGui::Button(t("Открыть REFramework","Open REFramework")))expert=true;
             muted("reframework/data/re4dlss/re4dlss.log");muted("OptiScaler.log");
         } else {
-            heading(t("О сборке","About the build"),"RE:NDER EVIL (DLSS SR/NR) · 0.1.0 RC.2");
+            heading(t("О сборке","About the build"),"RE:NDER EVIL (DLSS SR/NR) · FG test.1");
             card_begin("build_credits");
             ImGui::TextColored(colour(0xe6ac50),"RUSJONERAP + Codex");
             ImGui::TextWrapped("%s",t("Авторы сборки, интеграции и единой панели управления.","Build, integration and unified control panel authors."));

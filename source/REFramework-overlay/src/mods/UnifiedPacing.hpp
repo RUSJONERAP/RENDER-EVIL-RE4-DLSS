@@ -27,7 +27,7 @@ inline size_t cursor=0,samples=0;
 inline float measured_fps=0,mean_ms=0,p99_ms=0;
 inline int64_t counter(){LARGE_INTEGER n{};QueryPerformanceCounter(&n);return n.QuadPart;}
 inline int64_t frequency(){static const auto value=[](){LARGE_INTEGER f{};QueryPerformanceFrequency(&f);return f.QuadPart;}();return value;}
-inline void before_present(HWND window,bool test_only=false) {
+inline void before_present(HWND window,bool test_only=false,bool external_pacing=false) {
     if(!active() || test_only)return;
     struct ThreadState {
         Schedule schedule;
@@ -41,7 +41,7 @@ inline void before_present(HWND window,bool test_only=false) {
     if(window && (IsIconic(window) || !IsWindowVisible(window) || GetForegroundWindow()!=window)) {
         state.schedule.reset();state.previous=0;return;
     }
-    const auto target=state.schedule.deadline(now,f,enabled.load()?target_fps.load():0);
+    const auto target=state.schedule.deadline(now,f,enabled.load() && !external_pacing?target_fps.load():0);
     // A per-thread high-resolution timer, no global timer-resolution change.
     // Only the final <=200 us use a short spin to absorb scheduler wake error.
     const auto spin_guard=std::max<int64_t>(1,f/5000);

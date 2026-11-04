@@ -44,7 +44,7 @@ index 9d013ee..c3fe6a0 100644
  [target.RE4SDK]
  type = "sdk"
 diff --git a/src/D3D12Hook.cpp b/src/D3D12Hook.cpp
-index 524f084..15a53d3 100644
+index 524f084..b7bd618 100644
 --- a/src/D3D12Hook.cpp
 +++ b/src/D3D12Hook.cpp
 @@ -17,6 +17,7 @@
@@ -55,17 +55,29 @@ index 524f084..15a53d3 100644
  
  static D3D12Hook* g_d3d12_hook = nullptr;
  thread_local bool g_inside_d3d12_hook = false;
-@@ -663,6 +664,8 @@ HRESULT WINAPI D3D12Hook::present(IDXGISwapChain3* swap_chain, uint64_t sync_int
+@@ -95,6 +96,10 @@ HRESULT WINAPI D3D12Hook::create_swapchain(IDXGIFactory4* factory, IUnknown* dev
+ }
+ 
+ void D3D12Hook::hook_streamline(HMODULE dlssg_module) try {
++    // Actual DLSS owns its Streamline swapchain from before D3D12 device creation.
++    // Its private queue-link helper can run before REFramework initializes; the
++    // usual recovery hook would wait on the thread that must finish initialization.
++    if(re4unified::active() && std::filesystem::exists(re4unified::root()/L"reframework/data/re4unified/actual_fg.txt"))return;
+     if (D3D12Hook::s_streamline.setup) {
+         return;
+     }
+@@ -663,6 +668,9 @@ HRESULT WINAPI D3D12Hook::present(IDXGISwapChain3* swap_chain, uint64_t sync_int
          return S_OK;
      }
  
-+    re4unified::pacing::before_present(swapchain_wnd,(flags & DXGI_PRESENT_TEST)!=0);
++    const bool external_pacing=re4unified::active() && GetModuleHandleW(L"sl.interposer.dll")!=nullptr;
++    re4unified::pacing::before_present(swapchain_wnd,(flags & DXGI_PRESENT_TEST)!=0,external_pacing);
 +
      if (d3d12->m_on_present) {
          d3d12->m_on_present(*d3d12);
      }
 diff --git a/src/REFramework.cpp b/src/REFramework.cpp
-index abf026c..59eacc5 100644
+index abf026c..dc85590 100644
 --- a/src/REFramework.cpp
 +++ b/src/REFramework.cpp
 @@ -42,6 +42,7 @@ extern "C" {
@@ -112,10 +124,12 @@ index abf026c..59eacc5 100644
  
      if (s_fallback_appdata) {
          spdlog::warn("Failed to write to current directory, falling back to appdata folder");
-@@ -963,6 +979,14 @@ void REFramework::on_post_present_d3d11() {
+@@ -963,6 +979,16 @@ void REFramework::on_post_present_d3d11() {
  void REFramework::on_frame_d3d12() {
      std::scoped_lock _{ m_imgui_mtx };
  
++    if(re4unified::active())re4unified::pump_actual_commands();
++
 +    if(re4unified::active() && m_d3d12_hook && m_d3d12_hook->get_swap_chain()) {
 +        DXGI_SWAP_CHAIN_DESC desc{};
 +        if(SUCCEEDED(m_d3d12_hook->get_swap_chain()->GetDesc(&desc))) {
@@ -127,7 +141,7 @@ index abf026c..59eacc5 100644
      m_renderer_type = RendererType::D3D12;
  
      auto command_queue = m_d3d12_hook->get_command_queue();
-@@ -1120,6 +1144,10 @@ void REFramework::on_frame_d3d12() {
+@@ -1120,6 +1146,10 @@ void REFramework::on_frame_d3d12() {
  }
  
  void REFramework::on_post_present_d3d12() {
@@ -138,7 +152,7 @@ index abf026c..59eacc5 100644
      if (!m_error.empty() || !m_initialized || !m_game_data_initialized) {
          if (m_last_present_time <= std::chrono::steady_clock::now()){
              m_last_present_time = std::chrono::steady_clock::now();
-@@ -1592,6 +1620,7 @@ void REFramework::init_fonts() {
+@@ -1592,6 +1622,7 @@ void REFramework::init_fonts() {
          loaded_fonts["ICON"] = fonts->AddFontFromMemoryTTF((void*)af_faprolight_ptr, af_faprolight_size, m_font_size, &custom_icons, icon_ranges);
      }*/
  
@@ -146,7 +160,7 @@ index abf026c..59eacc5 100644
      m_wants_device_object_cleanup = true;
  }
  
-@@ -1616,6 +1645,7 @@ void REFramework::draw_ui() {
+@@ -1616,6 +1647,7 @@ void REFramework::draw_ui() {
      ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange; // causes bugs with the cursor
  
      if (!m_draw_ui) {
@@ -154,7 +168,7 @@ index abf026c..59eacc5 100644
          remove_set_cursor_pos_patch();
  
          m_is_ui_focused = false;
-@@ -1662,14 +1692,19 @@ void REFramework::draw_ui() {
+@@ -1662,14 +1694,19 @@ void REFramework::draw_ui() {
          m_windows_message_hook->window_toggle_cursor(true);
      }
  

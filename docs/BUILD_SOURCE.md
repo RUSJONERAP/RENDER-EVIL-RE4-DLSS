@@ -11,6 +11,10 @@ The overlay contains every added header required by the patch, including inactiv
 
 Tests are in `source/tests/`. The NGX ABI test consumes the upstream SDK declaration from the OptiScaler source; that declaration is not embedded into our adapter. The timer test creates its marker only under its own test executable directory, never the game.
 
-The bundled, unchanged OptiScaler binary matches `stage_alt/OptiScaler.dll` from OptiScaler v2.3.0-beta.6, source commit `fde33d310b0749ef3bef7c44e919f8da9b7e2652`. `source/OptiScaler-fde33d31.zip` is the corresponding source archive supplied with that release. Its `SUBMODULES.txt` records dependency repositories and exact commits needed for rebuilding. Original component licenses remain applicable.
+The bundled, unchanged OptiScaler binary matches `stage_alt/OptiScaler.dll` from OptiScaler v2.3.0-beta.6, source commit `fde33d310b0749ef3bef7c44e919f8da9b7e2652`. In the new full release, `source/OptiScaler-fde33d31/` contains the extracted corresponding sources supplied with that release; the older RC.2 package used `source/OptiScaler-fde33d31.zip`. Its `SUBMODULES.txt` records dependency repositories and exact commits needed for rebuilding. Original component licenses remain applicable.
 
 The Actual DLSS DLL is closed source and unmodified. No source for it is claimed. NVIDIA runtimes are binary dependencies, not authored by this project.
+
+Preview 1 adds `UnifiedFrameGen.hpp` and updates the panel/runtime, Present pacing, Streamline-hook coexistence and explicit SR quality integration. The patch and overlay in this repository are updated together. `source/tests/unified_framegen_test.cpp` exercises provider status, the command mailbox and main-view selection; `unified_pacing_runtime_test.cpp` checks the limiter yields to an external FG provider.
+
+`installer/` contains the player-facing installer sources. The complete release also supplies its component catalog, defaults and runtime files. `source/installer/` contains offline tests and the release assembly scripts; rebuilding the full distribution requires the pinned upstream component inputs, not only the text repository.

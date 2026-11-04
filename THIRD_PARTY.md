@@ -11,4 +11,6 @@ This project combines separately licensed components. The project license covers
 | DLSS SR 310.9.16.0 | NVIDIA | NVIDIA-signed binary; unchanged. |
 | DLSS NR 310.9.16.0 | NVIDIA runtime supplied by the user | Unsigned; authenticity is not claimed independently verified. Unchanged. |
 
-Exact binary fingerprints, provenance and component notices are in the full release's `manifest.json` and `licenses/`. The bundle is not an official NVIDIA or Capcom product.
+Preview 1 adds NVIDIA Streamline 2.14.16 and DLSS-G 310.9.16.0 for native FG, plus the optional [dlssg_for_sm86 0.4.1](https://github.com/sdli1995/dlssg_for_sm86/releases/tag/0.4.1) by sdli1995. The adapter's own code uses its release MIT licence; derived NVIDIA kernel material keeps its separate terms. Original notices are included under `licenses/Streamline` and `licenses/dlssg-for-sm86`.
+
+Exact binary fingerprints, provenance and component notices are in Preview 1's `catalog.json`, `SHA256SUMS.txt` and `licenses/` (RC.2 used `manifest.json`). The bundle is not an official NVIDIA or Capcom product.
